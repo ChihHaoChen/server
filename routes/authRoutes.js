@@ -8,7 +8,22 @@ module.exports = app => {
     })
   );
 
+  app.get(
+    '/auth/facebook',
+    passport.authenticate('facebook', {
+      scope: 'email'
+    })
+  );
+
   app.get('/auth/google/callback', passport.authenticate('google'));
+
+  app.get(
+    '/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      successRedirect: '/api/current_user',
+      failureRedirect: '/auth/facebook'
+    })
+  );
 
   app.get('/api/logout', (req, res) => {
     req.logout();
