@@ -14,8 +14,14 @@ module.exports = app => {
       scope: 'email'
     })
   );
-
-  app.get('/auth/google/callback', passport.authenticate('google'));
+// here actually passport.authenticate is a middleware
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res) => {
+      res.redirect('/surverys');
+    }
+  );
 
   app.get(
     '/auth/facebook/callback',
@@ -27,7 +33,7 @@ module.exports = app => {
 
   app.get('/api/logout', (req, res) => {
     req.logout();
-    res.send(req.user);
+    res.redirect('/');
   });
 
   app.get('/api/current_user', (req, res) => {
